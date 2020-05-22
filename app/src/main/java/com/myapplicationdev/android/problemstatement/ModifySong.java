@@ -19,6 +19,7 @@ public class ModifySong extends AppCompatActivity {
     RadioButton rb;
     Button btnUpdate, btnDelete, btnCancel;
     Song data;
+    int rbCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class ModifySong extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
         btnDelete = findViewById(R.id.btnDelete);
 
+
         Intent i = getIntent();
         data = (Song) i.getSerializableExtra("data");
 
@@ -42,6 +44,13 @@ public class ModifySong extends AppCompatActivity {
         etTitle.setText(data.getTitle());
         etSinger.setText(data.getSingers());
         etYear.setText( String.valueOf(data.getYear()));
+        rbCheck = data.getStars();
+        RadioButton rb = findViewById(rbCheck);
+        String rgChoice = rb.getText().toString();
+        if(rgChoice.equals(rb)){
+            rb.setChecked(true);
+        }
+
 
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
