@@ -24,6 +24,7 @@ public class ModifySong extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_song);
+        setTitle("P05-NDPSongs ~ Modify Song");
 
         tvID = findViewById(R.id.tv_showID);
         etTitle = findViewById(R.id.etSongTitle);
@@ -37,10 +38,10 @@ public class ModifySong extends AppCompatActivity {
         Intent i = getIntent();
         data = (Song) i.getSerializableExtra("data");
 
-        tvID.setText("ID: " + data.get_id());
+        tvID.setText(String.valueOf(data.get_id()));
         etTitle.setText(data.getTitle());
         etSinger.setText(data.getSingers());
-        etYear.setText(data.getYear());
+        etYear.setText( String.valueOf(data.getYear()));
 
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +50,7 @@ public class ModifySong extends AppCompatActivity {
                 DBHelper dbh = new DBHelper(ModifySong.this);
                 data.setTitle(etTitle.getText().toString());
                 data.setSingers(etSinger.getText().toString());
-                data.setYear(Integer. parseInt(etYear.getText().toString()));
+                data.setYear(Integer.parseInt(etYear.getText().toString()));
 
                 dbh.updateSong(data);
                 dbh.close();
