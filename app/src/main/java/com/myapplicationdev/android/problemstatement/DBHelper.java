@@ -101,4 +101,79 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+
+    public ArrayList<Song> getAllSong(String keyword) {
+        ArrayList<Song> songs = new ArrayList<Song>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns= {COLUMN_ID, COLUMN_SONG_TITLE, COLUMN_SONG_SINGERS, COLUMN_SONG_YEAR, COLUMN_SONG_STARS};
+        String condition = COLUMN_SONG_STARS + " = ?";
+        String[] args = {keyword};
+        Cursor cursor = db.query(TABLE_SONG, columns, condition, args,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String singers = cursor.getString(2);
+                int year = cursor.getInt(3);
+                int star = cursor.getInt(4);
+
+                Song song = new Song(id, title,singers,year,star);
+                songs.add(song);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return songs;
+    }
+
+    public ArrayList<Song> getAllSongByYear(String keyword) {
+        ArrayList<Song> songs = new ArrayList<Song>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns= {COLUMN_ID, COLUMN_SONG_TITLE, COLUMN_SONG_SINGERS, COLUMN_SONG_YEAR, COLUMN_SONG_STARS};
+        String condition = COLUMN_SONG_YEAR + " Like ?";
+        String[] args = {keyword};
+        Cursor cursor = db.query(TABLE_SONG, columns, condition, args,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String singers = cursor.getString(2);
+                int year = cursor.getInt(3);
+                int star = cursor.getInt(4);
+
+                Song song = new Song(id, title,singers,year,star);
+                songs.add(song);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return songs;
+    }
+
+    public boolean isExistingSong(String title) {
+        // Select all the notes' content
+        String selectQuery = "SELECT " + COLUMN_SONG_TITLE + " FROM "
+                + TABLE_SONG + " WHERE " + COLUMN_SONG_TITLE + " = '"
+                + title + "'";
+        // Get the instance of database to read
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Run the SQL query and get back the Cursor object
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // moveToFirst() moves to first row
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        // Close connection
+        cursor.close();
+        db.close();
+
+        return false;
+    }
 }

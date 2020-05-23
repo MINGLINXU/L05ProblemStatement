@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
                 db.insertSong(etTitle.getText().toString(), etSinger.getText().toString(), Integer.parseInt(etYear.getText().toString()), starts);
                 db.close();
-                Toast.makeText(MainActivity.this, "Inserted" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -54,10 +54,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
-
-
     }
+
+        private int getStars() {
+            int stars = 1;
+            switch (rg.getCheckedRadioButtonId()) {
+                case R.id.radioButton1:
+                    stars = 1;
+                    break;
+                case R.id.radioButton2:
+                    stars = 2;
+                    break;
+                case R.id.radioButton3:
+                    stars = 3;
+                    break;
+                case R.id.radioButton4:
+                    stars = 4;
+                    break;
+                case R.id.radioButton5:
+                    stars = 5;
+                    break;
+            }
+            return stars;
+        }
+
 }

@@ -19,7 +19,6 @@ public class ModifySong extends AppCompatActivity {
     RadioButton rb;
     Button btnUpdate, btnDelete, btnCancel;
     Song data;
-    int rbCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +43,19 @@ public class ModifySong extends AppCompatActivity {
         etTitle.setText(data.getTitle());
         etSinger.setText(data.getSingers());
         etYear.setText( String.valueOf(data.getYear()));
-        rbCheck = data.getStars();
-        RadioButton rb = findViewById(rbCheck);
-        String rgChoice = rb.getText().toString();
-        if(rgChoice.equals(rb)){
-            rb.setChecked(true);
+        int star = data.getStars();
+        rg = (RadioGroup) findViewById(R.id.rg);
+
+        if (star == 1){
+            rg.check(R.id.radioButton1);
+        } else if (star == 2){
+            rg.check(R.id.radioButton2);
+        } else if (star == 3){
+            rg.check(R.id.radioButton3);
+        } else if (star == 4){
+            rg.check(R.id.radioButton4);
+        }else if (star >= 5){
+            rg.check(R.id.radioButton5);
         }
 
 
@@ -60,9 +67,12 @@ public class ModifySong extends AppCompatActivity {
                 data.setTitle(etTitle.getText().toString());
                 data.setSingers(etSinger.getText().toString());
                 data.setYear(Integer.parseInt(etYear.getText().toString()));
-
+                data.setStars(getStars());
                 dbh.updateSong(data);
                 dbh.close();
+                Intent i = new Intent();
+                i.putExtra("data", data);
+                setResult(RESULT_OK, i);
                 finish();
             }
         });
@@ -74,6 +84,10 @@ public class ModifySong extends AppCompatActivity {
                 DBHelper dbh = new DBHelper(ModifySong.this);
                 dbh.deleteNote(data.get_id());
                 dbh.close();
+
+                Intent i = new Intent();
+                i.putExtra("data", data);
+                setResult(RESULT_OK, i);
                 finish();
             }
         });
@@ -81,9 +95,29 @@ public class ModifySong extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ShowSong.class);
-                startActivity(intent);
+                finish();
             }
         });
+    }
+    private int getStars() {
+        int stars = 1;
+        switch (rg.getCheckedRadioButtonId()) {
+            case R.id.radioButton1:
+                stars = 1;
+                break;
+            case R.id.radioButton2:
+                stars = 2;
+                break;
+            case R.id.radioButton3:
+                stars = 3;
+                break;
+            case R.id.radioButton4:
+                stars = 4;
+                break;
+            case R.id.radioButton5:
+                stars = 5;
+                break;
+        }
+        return stars;
     }
 }
